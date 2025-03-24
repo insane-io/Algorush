@@ -77,6 +77,7 @@ export default function TeamRegistrationForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     //deployment
+    //fe
     try {
       const response = await fetch("https://send.pageclip.co/LU4rAOxd3UDiIxqdOlkRI1sZ3ni9Z2cw/Algorush", {
         method: 'POST',
