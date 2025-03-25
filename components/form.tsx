@@ -20,7 +20,7 @@ const formSchema = z.object({
   leaderEmail: z.string()
     .email({ message: "Please enter a valid email address." })
     .regex(/^[a-zA-Z0-9._%+-]+@atharvacoe\.ac\.in$/, {
-      message: "Email must be an @atharvacoe.ac.in address"
+      message: "Use Atharva Email Id"
     }),
   leaderBranch: z.string().min(1, { message: "Please select a branch." }),
   leaderYear: z.string().min(1, { message: "Please select a year." }),
@@ -33,7 +33,7 @@ const formSchema = z.object({
     z.string()
       .email({ message: "Please enter a valid email address." })
       .regex(/^[a-zA-Z0-9._%+-]+@atharvacoe\.ac\.in$/, {
-        message: "Email must be an @atharvacoe.ac.in address"
+        message: "Use Atharva Email Id"
       }),
     z.literal("")
   ]).optional(),
@@ -46,7 +46,7 @@ const formSchema = z.object({
     z.string()
       .email({ message: "Please enter a valid email address." })
       .regex(/^[a-zA-Z0-9._%+-]+@atharvacoe\.ac\.in$/, {
-        message: "Email must be an @atharvacoe.ac.in address"
+        message: "Use Atharva Email Id"
       }),
     z.literal("")
   ]).optional(),
@@ -122,6 +122,8 @@ export default function TeamRegistrationForm() {
 
     // No need to set isSubmitting to false as we're navigating away
   }
+
+  console.log("hello", process.env.NEXT_PUBLIC_PAGECLIP_URL)
 
   const branches = [
     { value: "CMPN", label: "CMPN" },
