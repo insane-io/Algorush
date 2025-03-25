@@ -56,7 +56,7 @@ export default function Navbar({ scrollTo }: NavbarProps) {
               FAQ
             </button>
             <Button
-              onClick={() => handleNavClick("reg")}
+              onClick={() => handleNavClick("register")}
               className="bg-green-600 hover:bg-green-700 text-black ml-2"
             >
               Register

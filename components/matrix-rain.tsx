@@ -23,7 +23,8 @@ export default function MatrixRain() {
 
     // Matrix rain characters
     const chars =
-      "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      "Array Stack Queue Heap Graph Tree HashMap Set List Trie LinkedList BFS DFS Dijkstra Floyd MergeSort QuickSort BubbleSort SelectionSort InsertionSort RadixSort BucketSort CountingSort BinarySearch LinearSearch Recursion Backtracking DynamicProgramming Greedy DivideAndConquer TwoPointers SlidingWindow UnionFind Kruskal Prim BellmanFord TopologicalSort KMP RabinKarp BoyerMoore TrieNode MinHeap MaxHeap AVLTree RedBlackTree BTree SegmentTree FenwickTree DisjointSet 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 
     // Create drops
     const fontSize = 16
@@ -76,6 +77,6 @@ export default function MatrixRain() {
     }
   }, [])
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full z-0" style={{ opacity: 0.7 }} />
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full z-0" style={{ opacity: 0.5 }} />
 }
 

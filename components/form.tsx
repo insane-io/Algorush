@@ -17,7 +17,11 @@ const formSchema = z.object({
 
   // Team Leader
   leaderName: z.string().min(2, { message: "Team leader name is required." }),
-  leaderEmail: z.string().email({ message: "Please enter a valid email address." }),
+  leaderEmail: z.string()
+    .email({ message: "Please enter a valid email address." })
+    .regex(/^[a-zA-Z0-9._%+-]+@atharvacoe\.ac\.in$/, {
+      message: "Email must be an @atharvacoe.ac.in address"
+    }),
   leaderBranch: z.string().min(1, { message: "Please select a branch." }),
   leaderYear: z.string().min(1, { message: "Please select a year." }),
   leaderContact: z.string().min(10, { message: "Please enter a valid contact number." }),
@@ -25,23 +29,40 @@ const formSchema = z.object({
 
   // Member 2 (optional but if name is provided, email is required)
   member2Name: z.string().optional(),
-  member2Email: z.string().email({ message: "Please enter a valid email address." }).optional()
-    .refine(val => !val || val.length > 0, { message: "Email is required if name is provided." }),
+  member2Email: z.union([
+    z.string()
+      .email({ message: "Please enter a valid email address." })
+      .regex(/^[a-zA-Z0-9._%+-]+@atharvacoe\.ac\.in$/, {
+        message: "Email must be an @atharvacoe.ac.in address"
+      }),
+    z.literal("")
+  ]).optional(),
   member2Branch: z.string().optional(),
   member2Year: z.string().optional(),
 
   // Member 3 (optional but if name is provided, email is required)
   member3Name: z.string().optional(),
-  member3Email: z.string().email({ message: "Please enter a valid email address." }).optional()
-    .refine(val => !val || val.length > 0, { message: "Email is required if name is provided." }),
+  member3Email: z.union([
+    z.string()
+      .email({ message: "Please enter a valid email address." })
+      .regex(/^[a-zA-Z0-9._%+-]+@atharvacoe\.ac\.in$/, {
+        message: "Email must be an @atharvacoe.ac.in address"
+      }),
+    z.literal("")
+  ]).optional(),
   member3Branch: z.string().optional(),
   member3Year: z.string().optional(),
 }).refine(
   (data) => {
+    // If member2 name is provided, email must be provided
     if (data.member2Name && !data.member2Email) return false;
+    // If member2 email is provided, name must be provided
     if (!data.member2Name && data.member2Email) return false;
+
+    // Same for member 3
     if (data.member3Name && !data.member3Email) return false;
     if (!data.member3Name && data.member3Email) return false;
+
     return true;
   },
   {
@@ -74,35 +95,32 @@ export default function TeamRegistrationForm() {
     },
   });
 
+  // Replace your onSubmit function with this updated version
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    //deployment
-    //fe
-    try {
-      const response = await fetch("https://send.pageclip.co/LU4rAOxd3UDiIxqdOlkRI1sZ3ni9Z2cw/Algorush", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      })
-      if (response.ok) {
-        setIsSubmitting(false);
-        console.log("response", response)
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
 
-    // Simulate API call
-    // setTimeout(() => {
-    //   console.log(values);
-    //   toast({
-    //     title: "Registration Successful",
-    //     description: "Your team has been registered for AlgoRush.",
-    //   });
-    //   setIsSubmitting(false);
-    // }, 1500);
+    // Create a hidden form and submit it
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = process.env.NEXT_PUBLIC_PAGECLIP_URL || '';
+    form.style.display = 'none';
+
+    // Add all form fields
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) { // Only add non-empty values
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value.toString();
+        form.appendChild(input);
+      }
+    });
+
+    // Submit the form
+    document.body.appendChild(form);
+    form.submit();
+
+    // No need to set isSubmitting to false as we're navigating away
   }
 
   const branches = [
@@ -115,7 +133,6 @@ export default function TeamRegistrationForm() {
   ];
 
   const years = [
-    { value: "FE", label: "FE" },
     { value: "SE", label: "SE" },
     { value: "TE", label: "TE" },
     { value: "BE", label: "BE" },
@@ -169,7 +186,7 @@ export default function TeamRegistrationForm() {
                         <Input
                           placeholder="Enter your team name"
                           {...field}
-                          className="bg-green-900/20 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
+                          className="bg-green-900/20 placeholder:text-green-100 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
                         />
                       </FormControl>
                       <FormMessage className="text-red-400" />
@@ -195,7 +212,7 @@ export default function TeamRegistrationForm() {
                           <Input
                             placeholder="Enter team leader's name"
                             {...field}
-                            className="bg-green-900/20 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
+                            className="bg-green-900/20 placeholder:text-green-100 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -216,7 +233,7 @@ export default function TeamRegistrationForm() {
                             placeholder="Enter team leader's email"
                             type="email"
                             {...field}
-                            className="bg-green-900/20 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
+                            className="bg-green-900/20 border-green-900 placeholder:text-green-100 text-green-100 focus:ring-green-500 focus:border-green-500"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -294,7 +311,7 @@ export default function TeamRegistrationForm() {
                           <Input
                             placeholder="Enter contact number"
                             {...field}
-                            className="bg-green-900/20 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
+                            className="bg-green-900/20 placeholder:text-green-100 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -314,7 +331,7 @@ export default function TeamRegistrationForm() {
                           <Input
                             placeholder="Enter HackerRank ID"
                             {...field}
-                            className="bg-green-900/20 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
+                            className="bg-green-900/20 placeholder:text-green-100 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -339,7 +356,7 @@ export default function TeamRegistrationForm() {
                           <Input
                             placeholder="Enter member's name"
                             {...field}
-                            className="bg-green-900/20 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
+                            className="bg-green-900/20 placeholder:text-green-100 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -358,7 +375,7 @@ export default function TeamRegistrationForm() {
                             placeholder="Enter member's email"
                             type="email"
                             {...field}
-                            className="bg-green-900/20 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
+                            className="bg-green-900/20 placeholder:text-green-100 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -435,7 +452,7 @@ export default function TeamRegistrationForm() {
                           <Input
                             placeholder="Enter member's name"
                             {...field}
-                            className="bg-green-900/20 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
+                            className="bg-green-900/20 placeholder:text-green-100 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -454,7 +471,7 @@ export default function TeamRegistrationForm() {
                             placeholder="Enter member's email"
                             type="email"
                             {...field}
-                            className="bg-green-900/20 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
+                            className="bg-green-900/20 placeholder:text-green-100 border-green-900 text-green-100 focus:ring-green-500 focus:border-green-500"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />

@@ -13,37 +13,31 @@ export default function EventTimeline() {
     {
       icon: <Flag className="h-5 w-5" />,
       title: "Inauguration",
-      time: "10:00 AM",
-      description: "The Matrix opens. Welcome ceremony and introduction to AlgoRush."
-    },
-    {
-      icon: <LightbulbIcon className="h-5 w-5" />,
-      title: "Release of Problem Statements",
       time: "12:00 PM",
-      description: "The Architect reveals the challenges. Problem statements go live."
+      description: "The Matrix opens. Welcome ceremony and introduction to AlgoRush."
     },
     {
       icon: <Play className="h-5 w-5" />,
       title: "Competition Begins",
-      time: "09:00 AM",
+      time: "12:30 PM",
       description: "Enter the Matrix. Coding competition officially starts."
     },
     {
-      icon: <CalendarClock className="h-5 w-5" />,
-      title: "Break",
-      time: "01:00 PM - 02:00 PM",
-      description: "Take the blue pill. Short rest period for all participants."
+      icon: <Play className="h-5 w-5" />,
+      title: "Competition Ends",
+      time: "02:30 PM",
+      description: "Escape the matrix."
     },
     {
       icon: <Award className="h-5 w-5" />,
       title: "Result Announcement",
-      time: "05:00 PM",
+      time: "03:00 PM",
       description: "The One is revealed. Winners and rankings announced."
     },
     {
       icon: <MessageSquare className="h-5 w-5" />,
       title: "Discussion of Questions",
-      time: "11:00 AM",
+      time: "3:15 AM",
       description: "Free your mind. Solution walkthrough and open discussion."
     }
   ]
