@@ -37,7 +37,7 @@ export default function EventTimeline() {
     {
       icon: <MessageSquare className="h-5 w-5" />,
       title: "Discussion of Questions",
-      time: "3:15 AM",
+      time: "3:15 PM",
       description: "Free your mind. Solution walkthrough and open discussion."
     }
   ]
